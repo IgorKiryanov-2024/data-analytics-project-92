@@ -1,7 +1,7 @@
 ---1. Считаем общее количество покупателей из таблицы customers.
   -- Используем агрегирующий оператор COUNT - SQL функция используется для подсчета количества строк. 
-SELECT COUNT(customer_id) AS customers_count
-FROM customers;
+select count(customer_id) as customers_count
+from customers;
 
 --2.1. Первый отчет о десятке лучших продавцов.
 --Используем агрегирующий оператор COUNT - SQL функция используется для подсчета количества строк.
@@ -22,14 +22,14 @@ limit 10;
 --Используем агрегирующий оператор having для дополнительной группировки после group by
 select
     employees.first_name || ' ' || employees.last_name as seller,
-    FLOOR(AVG(sales.quantity * products.price)) as average_income
+    floor(avg(sales.quantity * products.price)) as average_income
 from sales
 left join products on sales.product_id = products.product_id
 left join employees on sales.sales_person_id = employees.employee_id
 group by seller
 having
-    AVG(sales.quantity * products.price) < (
-        select AVG(sales.quantity * products.price)
+    avg(sales.quantity * products.price) < (
+        select avg(sales.quantity * products.price)
         from sales left
         join products on sales.product_id = products.product_id
     )
@@ -57,7 +57,7 @@ select
         when age between 26 and 40 then '26-40'
         else '40+'
     end as age_category,
-    COUNT(*) as age_count
+    count(*) as age_count
 from customers
 group by age_category
 order by age_category;
@@ -77,25 +77,25 @@ group by selling_month
 order by selling_month asc;
  --3.3. Третий отчет - о покупателях, первая покупка которых была в ходе проведения акций (акционные товары отпускали со стоимостью равной 0).
  --ROW_NUMBER() используем для нумерования строк
-with TAB as (
+with tab as (
     select
-        CUSTOMERS.CUSTOMER_ID,
-        SALES.SALE_DATE,
-        PRODUCTS.PRICE,
-        CUSTOMERS.FIRST_NAME || ' ' || CUSTOMERS.LAST_NAME as CUSTOMER,
-        EMPLOYEES.FIRST_NAME || ' ' || EMPLOYEES.LAST_NAME as SELLER,
+        customers.customer_id,
+        sales.sale_date,
+        products.price,
+        customers.first_name || ' ' || customers.last_name as customer,
+        employees.first_name || ' ' || employees.last_name as seller,
         ROW_NUMBER()
-            over (partition by CUSTOMERS.CUSTOMER_ID order by SALES.SALE_DATE)
-        as SALE_NUMBER
-    from SALES
-    left join CUSTOMERS on SALES.CUSTOMER_ID = CUSTOMERS.CUSTOMER_ID
-    left join PRODUCTS on SALES.PRODUCT_ID = PRODUCTS.PRODUCT_ID
-    left join EMPLOYEES on SALES.SALES_PERSON_ID = EMPLOYEES.EMPLOYEE_ID
-    where PRODUCTS.PRICE = 0
+            over (partition by customers.customer_id order by sales.sale_date)
+        as sale_number
+    from sales
+    left join customers on sales.customer_id = customers.customer_id
+    left join products on sales.product_id = products.product_id
+    left join employees on sales.sales_person_id = employees.employee_id
+    where products.price = 0
 )
 
 select
-    CUSTOMER,
-    SALE_DATE,
-    SELLER
-from TAB where SALE_NUMBER = 1;
+    customer,
+    sale_date,
+    seller
+from tab where sale_number = 1;
