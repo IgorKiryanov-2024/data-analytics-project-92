@@ -86,7 +86,7 @@ with TAB as (
         EMPLOYEES.FIRST_NAME || ' ' || EMPLOYEES.LAST_NAME as SELLER,
         ROW_NUMBER()
             over (partition by CUSTOMERS.CUSTOMER_ID order by SALES.SALE_DATE)
-            as SALE_NUMBER
+        as SALE_NUMBER
     from SALES
     left join CUSTOMERS on SALES.CUSTOMER_ID = CUSTOMERS.CUSTOMER_ID
     left join PRODUCTS on SALES.PRODUCT_ID = PRODUCTS.PRODUCT_ID
