@@ -1,4 +1,4 @@
---1. Считаем общее количество покупателей из таблицы customers.
+---1. Считаем общее количество покупателей из таблицы customers.
   -- Используем агрегирующий оператор COUNT - SQL функция используется для подсчета количества строк. 
 SELECT COUNT(customer_id) AS customers_count
 FROM customers;
@@ -45,8 +45,8 @@ select
 from sales
 left join products on sales.product_id = products.product_id
 left join employees on sales.sales_person_id = employees.employee_id
-group by extract(isodow from sales.sale_date), seller, day_of_week
-order by extract(isodow from sales.sale_date), seller;
+group by extract('isodow' from sales.sale_date), seller, day_of_week
+order by extract('isodow' from sales.sale_date), seller;
    
  --3.1. Первый отчет - количество покупателей в разных возрастных группах: 16-25, 26-40 и 40+.
 --оператор case позволяет осуществить проверку условий и возвратить в зависимости от выполнения того или иного условия тот или иной результат.
