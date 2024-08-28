@@ -84,7 +84,7 @@ with tab as (
         products.price,
         customers.first_name || ' ' || customers.last_name as customer,
         employees.first_name || ' ' || employees.last_name as seller,
-        ROW_NUMBER()
+        row_number()
             over (partition by customers.customer_id order by sales.sale_date)
         as sale_number
     from sales
