@@ -77,12 +77,13 @@ order by selling_month asc;
     left join CUSTOMERS on SALES.CUSTOMER_ID = CUSTOMERS.CUSTOMER_ID
     left join PRODUCTS on SALES.PRODUCT_ID = PRODUCTS.PRODUCT_ID
     left join EMPLOYEES on SALES.SALES_PERSON_ID = EMPLOYEES.EMPLOYEE_ID
-    where PRODUCTS.PRICE = 0
-)
-
+    where PRODUCTS.PRICE = 0)
 select
     CUSTOMER,
     SALE_DATE,
     SELLER
 from TAB where SALE_NUMBER = 1;
 
+
+    
+  
