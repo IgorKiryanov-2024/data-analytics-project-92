@@ -50,7 +50,7 @@
     order by age_category;
  3.2. Второй отчет - данные по количеству уникальных покупателей и выручке, которую они принесли.
    select
-   to_char(sales.sale_date, 'YYYY-MM') as date,  --Оператор To_char - преобразование даты в день недели
+   to_char(sales.sale_date, 'YYYY-MM') as selling_month,  --Оператор To_char - преобразование даты в день недели
    count(distinct sales.customer_id) as total_customers, --Используем агрегирующий оператор COUNT - SQL функция используется для подсчета количества строк.
    FLOOR(SUM(quantity * price)) as income  --Используем агрегирующий оператор SUM - SQL функция используется для суммирования строк (количество умножаем на цену товара). Оператор ROUND - для округления чисел
    from sales
@@ -58,7 +58,7 @@
    LEFT join products on products.product_id = sales.product_id
    LEFT join employees on employees.employee_id = sales.sales_person_id
    group by 1 
-  order by date asc;
+   order by selling_month asc;
  3.3. Третий отчет - о покупателях, первая покупка которых была в ходе проведения акций (акционные товары отпускали со стоимостью равной 0).
     with TAB as (select
       customers.customer_id,
