@@ -8,7 +8,7 @@
     select
           employees.first_name||' '||employees.last_name as seller,
     count(employee_id) as operations, --Используем агрегирующий оператор COUNT - SQL функция используется для подсчета количества строк.
-    ROUND(SUM(quantity * price),0) as income --Используем агрегирующий оператор SUM - SQL функция используется для суммирования строк (количество умножаем на цену товара). Оператор ROUND - для округления чисел
+    FLOOR(SUM(quantity * price)) as income --Используем агрегирующий оператор SUM - SQL функция используется для суммирования строк (количество умножаем на цену товара). Оператор FLOOR - для округления целого числа
     from sales
          LEFT join customers on customers.customer_id = sales.customer_id
          LEFT join products  on products.product_id = sales.product_id
@@ -19,7 +19,7 @@
  2.2. Второй отчет - информация о продавцах, чья средняя выручка за сделку меньше средней выручки за сделку по всем продавцам.
     select
           employees.first_name||' '||employees.last_name as seller,
-    ROUND(AVG(quantity * price),0) as average_income --Используем агрегирующий оператор AVG - SQL функция используется для подсчета среднего значения (количество умножаем на цену товара). Оператор ROUND - для округления чисел
+    FLOOR(AVG(quantity * price)) as average_income --Используем агрегирующий оператор AVG - SQL функция используется для подсчета среднего значения (количество умножаем на цену товара). Оператор ROUND - для округления чисел
     from sales
          LEFT join products on products.product_id = sales.product_id
          LEFT join employees on employees.employee_id = sales.sales_person_id
@@ -30,7 +30,7 @@
     select
           employees.first_name||' '||employees.last_name as seller,
           to_char(sales.sale_date, 'day') as day_of_week, --Оператор To_char - преобразование даты в день недели
-    ROUND(SUM(quantity * price),0) as income
+    FLOOR(SUM(quantity * price)) as income
     from sales
     LEFT join products on products.product_id = sales.product_id
     LEFT join employees on employees.employee_id = sales.sales_person_id
@@ -52,7 +52,7 @@
    select
    to_char(sales.sale_date, 'YYYY-MM') as date,  --Оператор To_char - преобразование даты в день недели
    count(distinct sales.customer_id) as total_customers, --Используем агрегирующий оператор COUNT - SQL функция используется для подсчета количества строк.
-   ROUND(SUM(quantity * price),0) as income  --Используем агрегирующий оператор SUM - SQL функция используется для суммирования строк (количество умножаем на цену товара). Оператор ROUND - для округления чисел
+   FLOOR(SUM(quantity * price)) as income  --Используем агрегирующий оператор SUM - SQL функция используется для суммирования строк (количество умножаем на цену товара). Оператор ROUND - для округления чисел
    from sales
    LEFT join customers on customers.customer_id = sales.customer_id
    LEFT join products on products.product_id = sales.product_id
