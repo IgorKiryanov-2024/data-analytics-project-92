@@ -97,3 +97,15 @@ select
     sale_date,
     seller
 from tab where sale_number = 1;
+--3.3.Второй вариант решения задачи через distinct on
+select distinct on (customers.customer_id)
+    sales.sale_date,
+    customers.first_name || ' ' || customers.last_name as customer,
+    employees.first_name || ' ' || employees.last_name as seller
+from sales
+left join customers on sales.customer_id = customers.customer_id
+left join products on sales.product_id = products.product_id
+left join employees on sales.sales_person_id = employees.employee_id
+where products.price = 0
+order by customers.customer_id, sales.sale_date;
+
