@@ -98,7 +98,7 @@ select
     seller
 from tab where sale_number = 1;
 --3.3.Второй вариант решения задачи через distinct on
-select distinct on (customers.first_name || ' ' || customers.last_name)
+select distinct on(customers.first_name || ' ' || customers.last_name)
     customers.first_name || ' ' || customers.last_name as customer,
     min(sales.sale_date) as sale_date,
     employees.first_name || ' ' || employees.last_name as seller
