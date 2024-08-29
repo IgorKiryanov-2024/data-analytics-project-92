@@ -11,7 +11,6 @@ select
     count(employees.employee_id) as operations,
     floor(sum(sales.quantity * products.price)) as income
 from sales
-left join customers on sales.customer_id = customers.customer_id
 left join products on sales.product_id = products.product_id
 left join employees on sales.sales_person_id = employees.employee_id
 group by seller
@@ -70,7 +69,6 @@ select
     count(distinct sales.customer_id) as total_customers,
     floor(sum(sales.quantity * products.price)) as income
 from sales
-left join customers on sales.customer_id = customers.customer_id
 left join products on sales.product_id = products.product_id
 left join employees on sales.sales_person_id = employees.employee_id
 group by selling_month
@@ -93,9 +91,21 @@ with tab as (
     left join employees on sales.sales_person_id = employees.employee_id
     where products.price = 0
 )
-
+ 
 select
     customer,
     sale_date,
     seller
 from tab where sale_number = 1;
+--3.3.Второй вариант решения задачи через distinct on
+select distinct on (customers.first_name || ' ' || customers.last_name)
+    customers.first_name || ' ' || customers.last_name as customer,
+    min(sales.sale_date) as sale_date,
+    employees.first_name || ' ' || employees.last_name as seller
+from sales
+left join customers on sales.customer_id = customers.customer_id
+left join products on sales.product_id = products.product_id
+left join employees on sales.sales_person_id = employees.employee_id
+where products.price = 0
+group by customer, seller
+order by customer;
