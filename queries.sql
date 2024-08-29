@@ -108,4 +108,3 @@ left join products on sales.product_id = products.product_id
 left join employees on sales.sales_person_id = employees.employee_id
 where products.price = 0
 order by customers.customer_id, sales.sale_date;
-
